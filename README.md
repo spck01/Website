@@ -11,12 +11,15 @@ hotChicken_sp/
 ├── index.html          # TOP
 ├── about.html          # 自己紹介
 ├── links.html            # リンク
+├── 404.html               # カスタム404ページ（GitHub Pagesが自動で使用）
 ├── css/style.css
 ├── css/fonts/             # 東雲ゴシック（JF-Dot-Shinonome16）のWOFF2ファイル
 ├── js/main.js
 ├── assets/icon.png        # TOP・自己紹介ページ共通のアイコン（任意）
 ├── assets/favicon.svg     # ファビコン・ロゴのトウガラシアイコン
-└── tools/icon-cropper.html # アイコン画像の切り抜きツール（開発用、非公開リンク）
+├── assets/og-image.png    # SNSシェア時のOGP画像（1200x630）
+├── tools/icon-cropper.html # アイコン画像の切り抜きツール（開発用、非公開リンク）
+└── tools/og-image.html    # OGP画像のソース（開発用、非公開リンク）
 ```
 
 ## 編集ポイント
@@ -28,6 +31,8 @@ hotChicken_sp/
 - **配色**: `css/style.css` 冒頭の `:root` 内の変数（`--c-red` / `--c-yellow` / `--c-black` / `--c-orange` など）で調整できます。
 - **フォント**: 日本語は東雲ゴシック（[JF-Dot-Shinonome16](http://jikasei.me/font/jf-dotfont/) / 自家製フォント工房が配布するTTF変換版をWOFF2化して同梱、著作権放棄されたパブリックドメインフォント）を使用しています。`css/style.css` 冒頭の `@font-face` とその下の `--font-body` / `--font-display` を書き換えれば別のフォントに戻せます。ドット絵フォントのため大きい見出しではブロック状のエッジがそのまま拡大表示されます（意図した見た目です）。
 - **サイトアイコン類**: 絵文字は使わずSVGで統一しています。ロゴ・favicon（`assets/favicon.svg`）は自作のトウガラシアイコン（`css/style.css`の`.logo .chili`で色や大きさを調整可能）。アバターのプレースホルダー・ナビカードのアイコンは [game-icons.net](https://game-icons.net/)（CC BY 3.0、要クレジット表記）から、ニワトリ（Delapouite作 "Rooster"）、コック帽（Delapouite作 "Chef Toque"）、鎖の輪（Lorc作 "Linked Rings"）を使用しています。差し替える場合も同サイトで似た雰囲気のSVGを探し、`fill="currentColor"`にして色をCSS側で統一してください。
+- **SNSシェア時の見え方（OGP / Twitter Card）**: 各ページの`<head>`に`og:*` / `twitter:*`タグを設定しており、X・Discord・Slackなどにリンクを貼るとタイトル・説明文・`assets/og-image.png`のカード画像付きでプレビューされます。名前やキャッチコピーを変えたら、各HTMLの`og:title` / `og:description` / `twitter:title` / `twitter:description`も合わせて書き換えてください。OGP画像自体は`tools/og-image.html`をブラウザで開いてスクリーンショットを撮り直せば更新できます（1200×630のウィンドウサイズで撮影、`assets/og-image.png`に保存）。`og:url`はリポジトリ名・ユーザー名を変えた場合に合わせて書き換えてください。
+- **404ページ**: `404.html`をリポジトリ直下に置くと、GitHub Pagesが自動でカスタム404として使用します（「Deploy from a branch」設定時）。他ページと同じダイアログボックス・タイプライター演出を流用しているので、文言は`data-typewriter`が付いた`<p>`タグ内を書き換えるだけで反映されます。
 
 ## ローカルで確認する
 
