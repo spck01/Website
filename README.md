@@ -11,6 +11,7 @@ hotChicken_sp/
 ├── gallery.html         # イラスト集
 ├── links.html            # リンク
 ├── css/style.css
+├── css/fonts/             # 東雲ゴシック（JF-Dot-Shinonome16）のWOFF2ファイル
 ├── js/main.js
 ├── assets/icon.png        # TOPページのアイコン（任意）
 ├── assets/illustrations/ # イラスト画像を置く場所
@@ -25,6 +26,7 @@ hotChicken_sp/
 - **イラスト集 (gallery.html / js/main.js)**: `assets/illustrations/` に画像を置き、`js/main.js` 冒頭の `illustrations` 配列の `src` にファイルパス（例: `assets/illustrations/work1.png`）を指定すると画像が表示されます。未設定の間はナンバー入りのプレースホルダーが表示されます。
 - **リンク (links.html)**: 各カードの `href="#"` を実際のSNSのURLに書き換えてください。不要なカードは削除して構いません。
 - **配色**: `css/style.css` 冒頭の `:root` 内の変数（`--c-red` / `--c-yellow` / `--c-black` / `--c-orange` など）で調整できます。
+- **フォント**: 日本語は東雲ゴシック（[JF-Dot-Shinonome16](http://jikasei.me/font/jf-dotfont/) / 自家製フォント工房が配布するTTF変換版をWOFF2化して同梱、著作権放棄されたパブリックドメインフォント）を使用しています。`css/style.css` 冒頭の `@font-face` とその下の `--font-body` / `--font-display` を書き換えれば別のフォントに戻せます。ドット絵フォントのため大きい見出しではブロック状のエッジがそのまま拡大表示されます（意図した見た目です）。
 
 ## ローカルで確認する
 

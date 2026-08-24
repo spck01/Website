@@ -3,6 +3,22 @@
    ベースカラー: 黒(#0d0705) / 赤(#e6231e) / 黄(#ffcc33) + 差し色オレンジ(#ff7a1a)
    ========================================================== */
 
+@font-face {
+  font-family: "Shinonome Gothic";
+  src: url("fonts/JF-Dot-Shinonome16.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Shinonome Gothic";
+  src: url("fonts/JF-Dot-Shinonome16B.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --c-black: #0d0705;
   --c-black-2: #17100d;
@@ -13,8 +29,8 @@
   --c-orange: #ff7a1a;
   --c-text: #fbf1e6;
   --c-text-dim: #cbb9ac;
-  --font-display: "Bungee", "Noto Sans JP", sans-serif;
-  --font-body: "Noto Sans JP", "Hiragino Sans", sans-serif;
+  --font-display: "Bungee", "Shinonome Gothic", "Noto Sans JP", sans-serif;
+  --font-body: "Shinonome Gothic", "Noto Sans JP", "Hiragino Sans", sans-serif;
   --header-h: 72px;
 }
 
