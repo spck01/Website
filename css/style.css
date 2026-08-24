@@ -627,6 +627,25 @@ section.content {
   margin: 0 auto;
 }
 
+/* Xの埋め込みスクリプトが読み込めなかった場合のフォールバック表示 */
+.x-timeline a.twitter-timeline {
+  display: block;
+  text-align: center;
+  padding: 1.1em 1.6em;
+  border: 2px solid var(--c-yellow);
+  border-radius: 999px;
+  background: var(--c-black-2);
+  color: var(--c-yellow);
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.x-timeline a.twitter-timeline:hover {
+  background: linear-gradient(90deg, var(--c-red), var(--c-orange));
+  color: var(--c-black);
+  border-color: transparent;
+}
+
 /* ---------- フッター ---------- */
 .site-footer {
   position: relative;
