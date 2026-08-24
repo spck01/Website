@@ -622,6 +622,11 @@ section.content {
   font-size: 0.82rem;
 }
 
+.x-timeline {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
 /* ---------- フッター ---------- */
 .site-footer {
   position: relative;
