@@ -1,6 +1,7 @@
 /* ==========================================================
    hotChicken_sp - main.js
-   カスタムカーソル / 背景の火の粉パーティクル / モバイルナビ / アイコン画像 / タイプライター / 趣味タブ
+   カスタムカーソル / 背景の火の粉パーティクル / モバイルナビ / アイコン画像 /
+   タイプライター / 趣味タブ / ステータスゲージ / ページ遷移フラッシュ
    ========================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -10,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initAvatars();
   initTypewriter();
   initHobbyTabs();
+  initStatBars();
+  initPageFlash();
 });
 
 /* ---------- カスタムカーソル ---------- */
@@ -138,6 +141,54 @@ function initHobbyTabs() {
       details.forEach((detail) => {
         detail.hidden = detail.dataset.hobbyDetail !== tab.dataset.target;
       });
+    });
+  });
+}
+
+/* ---------- 自己紹介ページ：ステータスゲージ ----------
+   data-value（0〜100）の割合までバーが伸びるアニメーションをかけます。
+------------------------------------------------------------ */
+function initStatBars() {
+  const bars = document.querySelectorAll("[data-stat-fill]");
+  if (!bars.length) return;
+
+  requestAnimationFrame(() => {
+    bars.forEach((bar) => {
+      const value = Math.max(0, Math.min(100, Number(bar.dataset.value) || 0));
+      bar.style.width = `${value}%`;
+    });
+  });
+}
+
+/* ---------- ページ遷移フラッシュ ----------
+   サイト内ナビ（ヘッダーnav・ロゴ・TOPのコマンド風カード）をクリックすると
+   画面を一瞬フラッシュさせてから遷移し、遷移先では逆にフラッシュを引かせます。
+------------------------------------------------------------ */
+function initPageFlash() {
+  const overlay = document.querySelector("[data-page-flash]");
+  if (!overlay) return;
+
+  if (sessionStorage.getItem("pageFlash") === "1") {
+    sessionStorage.removeItem("pageFlash");
+    overlay.classList.add("no-transition", "is-visible");
+    requestAnimationFrame(() => {
+      overlay.classList.remove("no-transition");
+      requestAnimationFrame(() => overlay.classList.remove("is-visible"));
+    });
+  }
+
+  document.querySelectorAll(".main-nav a, .nav-card, .logo").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const href = link.getAttribute("href");
+      if (!href || href.startsWith("#")) return;
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+      e.preventDefault();
+      overlay.classList.add("is-visible");
+      sessionStorage.setItem("pageFlash", "1");
+      setTimeout(() => {
+        window.location.href = href;
+      }, 200);
     });
   });
 }
