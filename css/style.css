@@ -633,23 +633,24 @@ section.content {
   border-top: 1px solid rgba(255, 204, 51, 0.1);
 }
 
-/* ---------- ページ遷移フラッシュ ---------- */
+/* ---------- ページ遷移フラッシュ（ポケモン風スパイラルワイプ） ---------- */
 .page-flash {
   position: fixed;
   inset: 0;
-  background: var(--c-text);
-  opacity: 0;
-  pointer-events: none;
   z-index: 500;
-  transition: opacity 0.18s ease;
+  display: grid;
+  grid-template-columns: repeat(var(--flash-cols, 14), 1fr);
+  grid-template-rows: repeat(var(--flash-rows, 8), 1fr);
+  pointer-events: none;
 }
 
-.page-flash.is-visible {
+.flash-cell {
+  background: var(--c-black);
+  opacity: 0;
+}
+
+.flash-cell.is-on {
   opacity: 1;
-}
-
-.page-flash.no-transition {
-  transition: none;
 }
 
 /* ---------- レスポンシブ ---------- */

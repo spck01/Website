@@ -164,17 +164,78 @@ function initStatBars() {
    サイト内ナビ（ヘッダーnav・ロゴ・TOPのコマンド風カード）をクリックすると
    画面を一瞬フラッシュさせてから遷移し、遷移先では逆にフラッシュを引かせます。
 ------------------------------------------------------------ */
+function spiralCellOrder(rows, cols) {
+  const order = [];
+  let top = 0;
+  let bottom = rows - 1;
+  let left = 0;
+  let right = cols - 1;
+
+  while (top <= bottom && left <= right) {
+    for (let c = left; c <= right; c++) order.push([top, c]);
+    top++;
+    for (let r = top; r <= bottom; r++) order.push([r, right]);
+    right--;
+    if (top <= bottom) {
+      for (let c = right; c >= left; c--) order.push([bottom, c]);
+      bottom--;
+    }
+    if (left <= right) {
+      for (let r = bottom; r >= top; r--) order.push([r, left]);
+      left++;
+    }
+  }
+  return order;
+}
+
 function initPageFlash() {
   const overlay = document.querySelector("[data-page-flash]");
   if (!overlay) return;
 
+  const cols = 14;
+  const rows = 8;
+  const stepMs = 6;
+
+  overlay.style.setProperty("--flash-cols", cols);
+  overlay.style.setProperty("--flash-rows", rows);
+
+  // cells[] は「外周→中心」のスパイラル順（時計回り）。
+  const cells = spiralCellOrder(rows, cols).map(([r, c]) => {
+    const cell = document.createElement("div");
+    cell.className = "flash-cell";
+    cell.style.gridRow = String(r + 1);
+    cell.style.gridColumn = String(c + 1);
+    overlay.appendChild(cell);
+    return cell;
+  });
+
+  const timers = [];
+  function clearTimers() {
+    timers.forEach((t) => clearTimeout(t));
+    timers.length = 0;
+  }
+
+  // covering=true: 外周セル(index 0)から中心へ、時計回りに1マスずつ塗る。
+  // covering=false: 中心セルから外周へ、時計回りの逆順で1マスずつ剥がす。
+  function sweep(covering, onDone) {
+    clearTimers();
+    const order = covering ? cells : [...cells].reverse();
+    order.forEach((cell, i) => {
+      timers.push(
+        setTimeout(() => {
+          cell.classList.toggle("is-on", covering);
+        }, i * stepMs)
+      );
+    });
+    if (onDone) {
+      timers.push(setTimeout(onDone, order.length * stepMs));
+    }
+  }
+
   if (sessionStorage.getItem("pageFlash") === "1") {
     sessionStorage.removeItem("pageFlash");
-    overlay.classList.add("no-transition", "is-visible");
-    requestAnimationFrame(() => {
-      overlay.classList.remove("no-transition");
-      requestAnimationFrame(() => overlay.classList.remove("is-visible"));
-    });
+    cells.forEach((cell) => cell.classList.add("is-on"));
+    sweep(false);
   }
 
   document.querySelectorAll(".main-nav a, .nav-card, .logo").forEach((link) => {
@@ -184,11 +245,10 @@ function initPageFlash() {
       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 
       e.preventDefault();
-      overlay.classList.add("is-visible");
       sessionStorage.setItem("pageFlash", "1");
-      setTimeout(() => {
+      sweep(true, () => {
         window.location.href = href;
-      }, 200);
+      });
     });
   });
 }
