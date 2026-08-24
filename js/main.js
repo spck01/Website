@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initEmbers();
   initMobileNav();
   initGallery();
-  initHeroAvatar();
+  initAvatars();
 });
 
 /* ---------- カスタムカーソル ---------- */
@@ -74,17 +74,18 @@ function initEmbers(count = 26) {
   }
 }
 
-/* ---------- TOPページのアイコン ----------
+/* ---------- アイコン画像（TOP / 自己紹介） ----------
    assets/icon.png を置き換えるだけで表示画像を変更できます。
-   ファイルが存在しない間は🐔のプレースホルダーが表示されます。
+   ファイルが存在しない間はSVGのプレースホルダーが表示されます。
 ------------------------------------------------------------ */
-function initHeroAvatar() {
-  const avatar = document.querySelector("[data-hero-avatar]");
-  const img = document.querySelector("[data-hero-avatar-img]");
-  if (!avatar || !img) return;
+function initAvatars() {
+  document.querySelectorAll("[data-avatar]").forEach((avatar) => {
+    const img = avatar.querySelector("[data-avatar-img]");
+    if (!img) return;
 
-  img.addEventListener("error", () => {
-    avatar.classList.add("is-fallback");
+    img.addEventListener("error", () => {
+      avatar.classList.add("is-fallback");
+    });
   });
 }
 

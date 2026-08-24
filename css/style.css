@@ -181,8 +181,12 @@ h1, h2, h3 {
 }
 
 .logo .flame {
+  width: 1.1em;
+  height: 1.1em;
+  fill: currentColor;
   animation: flicker 1.6s infinite ease-in-out;
   display: inline-block;
+  vertical-align: -0.15em;
 }
 
 @keyframes flicker {
@@ -251,10 +255,10 @@ h1, h2, h3 {
   padding: 7rem 1rem 5rem;
 }
 
-.hero-avatar {
+.avatar-circle {
+  flex: none;
   width: 140px;
   height: 140px;
-  margin: 0 auto 1.5rem;
   border-radius: 50%;
   overflow: hidden;
   background: linear-gradient(140deg, var(--c-red), var(--c-orange), var(--c-yellow));
@@ -265,26 +269,32 @@ h1, h2, h3 {
   transition: transform 0.4s ease;
 }
 
-.hero-avatar:hover {
-  transform: rotate(6deg) scale(1.05);
+.hero .avatar-circle {
+  margin: 0 auto 1.5rem;
 }
 
-.hero-avatar img {
+.avatar-circle:hover {
+  transform: rotate(8deg) scale(1.05);
+}
+
+.avatar-circle img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.hero-avatar .hero-avatar-fallback {
+.avatar-circle .avatar-fallback {
   display: none;
-  font-size: 3.4rem;
+  width: 56%;
+  height: 56%;
+  fill: var(--c-black);
 }
 
-.hero-avatar.is-fallback img {
+.avatar-circle.is-fallback img {
   display: none;
 }
 
-.hero-avatar.is-fallback .hero-avatar-fallback {
+.avatar-circle.is-fallback .avatar-fallback {
   display: block;
 }
 
@@ -341,10 +351,16 @@ h1, h2, h3 {
 }
 
 .nav-card .icon {
-  font-size: 2.4rem;
   display: inline-block;
   margin-bottom: 0.6em;
+  color: var(--c-yellow);
   transition: transform 0.3s ease;
+}
+
+.nav-card .icon svg {
+  width: 2.4rem;
+  height: 2.4rem;
+  fill: currentColor;
 }
 
 .nav-card h3 {
@@ -410,24 +426,6 @@ section.content {
   align-items: center;
   flex-wrap: wrap;
   margin-bottom: 3rem;
-}
-
-.avatar {
-  flex: none;
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: linear-gradient(140deg, var(--c-red), var(--c-orange), var(--c-yellow));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  box-shadow: 0 0 30px rgba(230, 35, 30, 0.4);
-  transition: transform 0.4s ease;
-}
-
-.avatar:hover {
-  transform: rotate(10deg) scale(1.05);
 }
 
 .profile-text {

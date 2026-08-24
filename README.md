@@ -1,6 +1,8 @@
 # hotChicken_sp
 
-自己紹介用の個人サイト（TOP / 自己紹介 / イラスト集 / リンク）。素のHTML/CSS/JSのみで作られており、ビルド不要でそのままGitHub Pagesに公開できます。
+自己紹介用の個人サイト（TOP / 自己紹介 / リンク）。素のHTML/CSS/JSのみで作られており、ビルド不要でそのままGitHub Pagesに公開できます。
+
+> イラスト集ページ（gallery.html）は一旦削除しています。過去のコミット（`git log -- gallery.html`）から復元可能です。
 
 ## ファイル構成
 
@@ -8,25 +10,25 @@
 hotChicken_sp/
 ├── index.html          # TOP
 ├── about.html          # 自己紹介
-├── gallery.html         # イラスト集
 ├── links.html            # リンク
 ├── css/style.css
 ├── css/fonts/             # 東雲ゴシック（JF-Dot-Shinonome16）のWOFF2ファイル
 ├── js/main.js
-├── assets/icon.png        # TOPページのアイコン（任意）
+├── assets/icon.png        # TOP・自己紹介ページ共通のアイコン（任意）
+├── assets/favicon.svg     # ファビコン・ロゴの炎アイコン
 ├── assets/illustrations/ # イラスト画像を置く場所
 └── tools/icon-cropper.html # アイコン画像の切り抜きツール（開発用、非公開リンク）
 ```
 
 ## 編集ポイント
 
-- **TOPページのアイコン (index.html)**: `assets/icon.png` に自分のアイコン画像を置くと、TOPページ上部に丸くトリミングされて表示されます。ファイルを置き換えるだけでよく、HTML/CSSの編集は不要です。未設置の間は🐔のプレースホルダーが表示されます。
+- **アイコン (index.html / about.html)**: `assets/icon.png` に自分のアイコン画像を置くと、TOPページ上部と自己紹介ページのアバターの両方に丸くトリミングされて表示されます（同じ1ファイルを共有）。ファイルを置き換えるだけでよく、HTML/CSSの編集は不要です。未設置の間はニワトリのSVGアイコンがプレースホルダーとして表示されます。
   - `tools/icon-cropper.html` をブラウザで直接開くと、画像のアップロード→ドラッグで位置調整→ズーム→PNG書き出しまでを1ページで行えます（サーバー不要）。Chrome/Edgeでは保存先を直接 `assets/icon.png` に指定でき、それ以外のブラウザではダウンロードした画像を `assets/icon.png` に移動してください。このツールは公開サイトのナビゲーションからはリンクされていない開発用ページです。
 - **自己紹介 (about.html)**: 名前・自己紹介文・趣味・スキルの各プレースホルダーを書き換えてください。
-- **イラスト集 (gallery.html / js/main.js)**: `assets/illustrations/` に画像を置き、`js/main.js` 冒頭の `illustrations` 配列の `src` にファイルパス（例: `assets/illustrations/work1.png`）を指定すると画像が表示されます。未設定の間はナンバー入りのプレースホルダーが表示されます。
 - **リンク (links.html)**: 各カードの `href="#"` を実際のSNSのURLに書き換えてください。不要なカードは削除して構いません。アイコンは [Simple Icons](https://simpleicons.org/)（CC0）のSVGをインラインで埋め込んでおり、`.link-badge`の`color`でテーマ色に統一しています。別サービスを追加する場合も同サイトからSVGを探して同様に埋め込めます。
 - **配色**: `css/style.css` 冒頭の `:root` 内の変数（`--c-red` / `--c-yellow` / `--c-black` / `--c-orange` など）で調整できます。
 - **フォント**: 日本語は東雲ゴシック（[JF-Dot-Shinonome16](http://jikasei.me/font/jf-dotfont/) / 自家製フォント工房が配布するTTF変換版をWOFF2化して同梱、著作権放棄されたパブリックドメインフォント）を使用しています。`css/style.css` 冒頭の `@font-face` とその下の `--font-body` / `--font-display` を書き換えれば別のフォントに戻せます。ドット絵フォントのため大きい見出しではブロック状のエッジがそのまま拡大表示されます（意図した見た目です）。
+- **サイトアイコン類（ロゴの炎・favicon・アバターのプレースホルダー・ナビカードのアイコン）**: 絵文字ではなく [game-icons.net](https://game-icons.net/)（CC BY 3.0、要クレジット表記）のSVGをインラインまたは`assets/favicon.svg`として埋め込んでいます。使用アイコンは炎（sbed作 "Fire"）、ニワトリ（Delapouite作 "Rooster"）、コック帽（Delapouite作 "Chef Toque"）、鎖の輪（Lorc作 "Linked Rings"）です。差し替える場合も同サイトで似た雰囲気のSVGを探し、`fill="currentColor"`にして色をCSS側で統一してください。
 
 ## ローカルで確認する
 
