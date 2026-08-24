@@ -659,11 +659,14 @@ section.content {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-family: var(--font-display);
-  font-size: 0.95rem;
   background: linear-gradient(140deg, var(--c-red), var(--c-orange));
   color: var(--c-black);
+}
+
+.link-badge svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
 }
 
 .link-info strong {
