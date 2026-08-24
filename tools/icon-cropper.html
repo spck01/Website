@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アイコン切り抜きツール | hotChicken_sp</title>
+<style>
+  :root {
+    --c-black: #0d0705;
+    --c-black-2: #17100d;
+    --c-red: #e6231e;
+    --c-orange: #ff7a1a;
+    --c-yellow: #ffcc33;
+    --c-text: #fbf1e6;
+    --c-text-dim: #cbb9ac;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--c-black);
+    color: var(--c-text);
+    font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+  .panel {
+    width: min(420px, 100%);
+    background: var(--c-black-2);
+    border: 1px solid rgba(255, 204, 51, 0.15);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+  }
+  h1 {
+    font-size: 1.2rem;
+    color: var(--c-yellow);
+    margin: 0 0 0.3em;
+  }
+  .note {
+    color: var(--c-text-dim);
+    font-size: 0.82rem;
+    margin: 0 0 1.5rem;
+    line-height: 1.6;
+  }
+  input[type="file"] {
+    color: var(--c-text-dim);
+    font-size: 0.85rem;
+    margin-bottom: 1.2rem;
+  }
+  .crop-stage {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    max-width: 100%;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto 1.2rem;
+    overflow: hidden;
+    background: var(--c-black);
+    border-radius: 12px;
+    touch-action: none;
+    cursor: grab;
+  }
+  .crop-stage.dragging { cursor: grabbing; }
+  .crop-stage img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: none;
+    transform-origin: 0 0;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+  }
+  .crop-mask {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 9999px rgba(13, 7, 5, 0.72);
+    pointer-events: none;
+  }
+  .empty-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--c-text-dim);
+    font-size: 0.85rem;
+    padding: 1rem;
+    text-align: center;
+  }
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.4rem;
+  }
+  .controls label {
+    font-size: 0.8rem;
+    color: var(--c-text-dim);
+    white-space: nowrap;
+  }
+  input[type="range"] {
+    flex: 1;
+    accent-color: var(--c-red);
+  }
+  .actions {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  button {
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 0.7em 1.4em;
+    border-radius: 999px;
+    border: 1px solid var(--c-yellow);
+    background: none;
+    color: var(--c-yellow);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  button:hover:not(:disabled) {
+    background: var(--c-yellow);
+    color: var(--c-black);
+  }
+  button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  button.primary {
+    background: linear-gradient(140deg, var(--c-red), var(--c-orange));
+    border-color: transparent;
+    color: var(--c-black);
+  }
+  button.primary:hover:not(:disabled) {
+    filter: brightness(1.1);
+  }
+  .status {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--c-text-dim);
+    min-height: 1.2em;
+  }
+</style>
+</head>
+<body>
+
+<div class="panel">
+  <h1>🔥 アイコン切り抜きツール</h1>
+  <p class="note">
+    画像を選んでドラッグで位置調整、スライダーで拡大縮小してから書き出してください。<br>
+    書き出した画像を <code>assets/icon.png</code> として保存すると、TOPページのアイコンに反映されます。
+  </p>
+
+  <input type="file" id="fileInput" accept="image/*">
+
+  <div class="crop-stage" id="stage">
+    <span class="empty-hint" id="emptyHint">ここに画像がありません<br>上のボタンから画像を選んでください</span>
+    <img id="srcImg" alt="" hidden>
+    <div class="crop-mask"></div>
+  </div>
+
+  <div class="controls">
+    <label for="zoom">ズーム</label>
+    <input type="range" id="zoom" min="1" max="4" step="0.01" value="1" disabled>
+  </div>
+
+  <div class="actions">
+    <button id="resetBtn" disabled>位置をリセット</button>
+    <button id="downloadBtn" class="primary" disabled>切り抜いて書き出す</button>
+  </div>
+
+  <p class="status" id="status"></p>
+</div>
+
+<script>
+(() => {
+  const fileInput = document.getElementById("fileInput");
+  const stage = document.getElementById("stage");
+  const img = document.getElementById("srcImg");
+  const emptyHint = document.getElementById("emptyHint");
+  const zoomInput = document.getElementById("zoom");
+  const resetBtn = document.getElementById("resetBtn");
+  const downloadBtn = document.getElementById("downloadBtn");
+  const statusEl = document.getElementById("status");
+
+  const STAGE_SIZE = 320;
+  const OUTPUT_SIZE = 512;
+
+  let baseScale = 1;   // 画像がstageを覆うのに必要な最小スケール
+  let zoomFactor = 1;  // baseScaleに対する倍率（スライダー値）
+  let offsetX = 0;
+  let offsetY = 0;
+  let naturalW = 0;
+  let naturalH = 0;
+
+  function currentScale() {
+    return baseScale * zoomFactor;
+  }
+
+  function clampOffsets() {
+    const scale = currentScale();
+    const dispW = naturalW * scale;
+    const dispH = naturalH * scale;
+    const maxX = Math.max(0, (dispW - STAGE_SIZE) / 2);
+    const maxY = Math.max(0, (dispH - STAGE_SIZE) / 2);
+    offsetX = Math.min(maxX, Math.max(-maxX, offsetX));
+    offsetY = Math.min(maxY, Math.max(-maxY, offsetY));
+  }
+
+  function render() {
+    clampOffsets();
+    const scale = currentScale();
+    const dispW = naturalW * scale;
+    const dispH = naturalH * scale;
+    const left = STAGE_SIZE / 2 - dispW / 2 + offsetX;
+    const top = STAGE_SIZE / 2 - dispH / 2 + offsetY;
+    img.style.width = `${dispW}px`;
+    img.style.height = `${dispH}px`;
+    img.style.transform = `translate(${left}px, ${top}px)`;
+  }
+
+  function loadImage(file) {
+    const url = URL.createObjectURL(file);
+    const temp = new Image();
+    temp.onload = () => {
+      naturalW = temp.naturalWidth;
+      naturalH = temp.naturalHeight;
+      baseScale = Math.max(STAGE_SIZE / naturalW, STAGE_SIZE / naturalH);
+      zoomFactor = 1;
+      offsetX = 0;
+      offsetY = 0;
+
+      img.src = url;
+      img.hidden = false;
+      emptyHint.hidden = true;
+
+      zoomInput.value = "1";
+      zoomInput.disabled = false;
+      resetBtn.disabled = false;
+      downloadBtn.disabled = false;
+      statusEl.textContent = "";
+
+      render();
+    };
+    temp.src = url;
+  }
+
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files && fileInput.files[0];
+    if (file) loadImage(file);
+  });
+
+  zoomInput.addEventListener("input", () => {
+    zoomFactor = parseFloat(zoomInput.value);
+    render();
+  });
+
+  resetBtn.addEventListener("click", () => {
+    zoomFactor = 1;
+    offsetX = 0;
+    offsetY = 0;
+    zoomInput.value = "1";
+    render();
+  });
+
+  // ドラッグで位置調整
+  let dragging = false;
+  let startX = 0;
+  let startY = 0;
+  let startOffsetX = 0;
+  let startOffsetY = 0;
+
+  stage.addEventListener("pointerdown", (e) => {
+    if (img.hidden) return;
+    dragging = true;
+    stage.classList.add("dragging");
+    stage.setPointerCapture(e.pointerId);
+    startX = e.clientX;
+    startY = e.clientY;
+    startOffsetX = offsetX;
+    startOffsetY = offsetY;
+  });
+
+  stage.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    offsetX = startOffsetX + (e.clientX - startX);
+    offsetY = startOffsetY + (e.clientY - startY);
+    render();
+  });
+
+  function endDrag(e) {
+    if (!dragging) return;
+    dragging = false;
+    stage.classList.remove("dragging");
+    if (e && stage.hasPointerCapture(e.pointerId)) {
+      stage.releasePointerCapture(e.pointerId);
+    }
+  }
+  stage.addEventListener("pointerup", endDrag);
+  stage.addEventListener("pointercancel", endDrag);
+
+  // ホイールでもズームできるように
+  stage.addEventListener("wheel", (e) => {
+    if (img.hidden) return;
+    e.preventDefault();
+    const next = Math.min(4, Math.max(1, zoomFactor - e.deltaY * 0.0015));
+    zoomFactor = next;
+    zoomInput.value = String(next);
+    render();
+  }, { passive: false });
+
+  async function exportPng() {
+    const scale = currentScale();
+    const exportScale = OUTPUT_SIZE / STAGE_SIZE;
+    const dispW = naturalW * scale;
+    const dispH = naturalH * scale;
+    const left = STAGE_SIZE / 2 - dispW / 2 + offsetX;
+    const top = STAGE_SIZE / 2 - dispH / 2 + offsetY;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = OUTPUT_SIZE;
+    canvas.height = OUTPUT_SIZE;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(
+      img,
+      left * exportScale,
+      top * exportScale,
+      dispW * exportScale,
+      dispH * exportScale
+    );
+
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+
+    if (window.showSaveFilePicker) {
+      try {
+        const handle = await window.showSaveFilePicker({
+          suggestedName: "icon.png",
+          types: [{ description: "PNG画像", accept: { "image/png": [".png"] } }],
+        });
+        const writable = await handle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+        statusEl.textContent = "保存しました。assets/icon.png に置き換えれば反映されます。";
+        return;
+      } catch (err) {
+        if (err && err.name === "AbortError") {
+          statusEl.textContent = "保存をキャンセルしました。";
+          return;
+        }
+        // 失敗時はダウンロード方式にフォールバック
+      }
+    }
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "icon.png";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    statusEl.textContent = "ダウンロードしました。assets/icon.png に移動してください。";
+  }
+
+  downloadBtn.addEventListener("click", () => {
+    exportPng().catch(() => {
+      statusEl.textContent = "書き出しに失敗しました。もう一度お試しください。";
+    });
+  });
+})();
+</script>
+</body>
+</html>

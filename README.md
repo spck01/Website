@@ -13,12 +13,14 @@ hotChicken_sp/
 ├── css/style.css
 ├── js/main.js
 ├── assets/icon.png        # TOPページのアイコン（任意）
-└── assets/illustrations/ # イラスト画像を置く場所
+├── assets/illustrations/ # イラスト画像を置く場所
+└── tools/icon-cropper.html # アイコン画像の切り抜きツール（開発用、非公開リンク）
 ```
 
 ## 編集ポイント
 
 - **TOPページのアイコン (index.html)**: `assets/icon.png` に自分のアイコン画像を置くと、TOPページ上部に丸くトリミングされて表示されます。ファイルを置き換えるだけでよく、HTML/CSSの編集は不要です。未設置の間は🐔のプレースホルダーが表示されます。
+  - `tools/icon-cropper.html` をブラウザで直接開くと、画像のアップロード→ドラッグで位置調整→ズーム→PNG書き出しまでを1ページで行えます（サーバー不要）。Chrome/Edgeでは保存先を直接 `assets/icon.png` に指定でき、それ以外のブラウザではダウンロードした画像を `assets/icon.png` に移動してください。このツールは公開サイトのナビゲーションからはリンクされていない開発用ページです。
 - **自己紹介 (about.html)**: 名前・自己紹介文・趣味・スキルの各プレースホルダーを書き換えてください。
 - **イラスト集 (gallery.html / js/main.js)**: `assets/illustrations/` に画像を置き、`js/main.js` 冒頭の `illustrations` 配列の `src` にファイルパス（例: `assets/illustrations/work1.png`）を指定すると画像が表示されます。未設定の間はナンバー入りのプレースホルダーが表示されます。
 - **リンク (links.html)**: 各カードの `href="#"` を実際のSNSのURLに書き換えてください。不要なカードは削除して構いません。
