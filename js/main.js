@@ -192,8 +192,11 @@ function initPageFlash() {
   const overlay = document.querySelector("[data-page-flash]");
   if (!overlay) return;
 
-  const cols = 14;
-  const rows = 8;
+  // マスがなるべく正方形になるよう、画面サイズから列数・行数を決める
+  // （画面が縦長のスマホでも、横長のPCでも同じ見た目の粒度になる）
+  const targetCellPx = 50;
+  const cols = Math.max(8, Math.min(22, Math.round(window.innerWidth / targetCellPx)));
+  const rows = Math.max(6, Math.min(16, Math.round(window.innerHeight / targetCellPx)));
   const stepMs = 6;
 
   overlay.style.setProperty("--flash-cols", cols);
