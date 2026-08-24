@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>自己紹介 | hotChicken_sp</title>
-<meta name="description" content="hotChicken_sp のプロフィール。趣味やスキルを紹介しています。">
+<meta name="description" content="hotChicken_sp のプロフィール。趣味を紹介しています。">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,7 +32,7 @@
 <main>
   <section class="page-hero">
     <h1>自己紹介</h1>
-    <p>趣味やスキルなどを紹介します。</p>
+    <p>趣味などを紹介します。</p>
   </section>
 
   <section class="content container">
@@ -53,22 +53,23 @@
 
     <div class="section-block">
       <h2>趣味</h2>
-      <p class="edit-note">[ここに実際の趣味を追加・編集してください]</p>
-      <ul class="hobby-list">
-        <li>趣味 1（例: イラスト制作）</li>
-        <li>趣味 2（例: ゲーム）</li>
-        <li>趣味 3（例: 音楽鑑賞）</li>
-      </ul>
-    </div>
-
-    <div class="section-block">
-      <h2>スキル</h2>
-      <p class="edit-note">[ここに実際のスキルを追加・編集してください]</p>
-      <div class="skill-tags">
-        <span class="skill-tag">スキル 1</span>
-        <span class="skill-tag">スキル 2</span>
-        <span class="skill-tag">スキル 3</span>
-        <span class="skill-tag">スキル 4</span>
+      <p>ここに趣味についての一言や紹介文を入れてください。</p>
+      <div class="hobby-tabs" data-hobby-tabs>
+        <button type="button" class="hobby-tab is-active" data-hobby-tab data-target="hobby-1">趣味 1（例: イラスト制作）</button>
+        <button type="button" class="hobby-tab" data-hobby-tab data-target="hobby-2">趣味 2（例: ゲーム）</button>
+        <button type="button" class="hobby-tab" data-hobby-tab data-target="hobby-3">趣味 3（例: 音楽鑑賞）</button>
+      </div>
+      <div class="hobby-panel">
+        <div class="hobby-detail" data-hobby-detail="hobby-1">
+          趣味1についての説明文をここに入れてください。<br>
+          行を分けたいときは br タグを、段落を分けたいときは p タグを使ってください。
+        </div>
+        <div class="hobby-detail" data-hobby-detail="hobby-2" hidden>
+          趣味2についての説明文をここに入れてください。
+        </div>
+        <div class="hobby-detail" data-hobby-detail="hobby-3" hidden>
+          趣味3についての説明文をここに入れてください。
+        </div>
       </div>
     </div>
 

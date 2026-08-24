@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileNav();
   initGallery();
   initAvatars();
+  initTypewriter();
+  initHobbyTabs();
 });
 
 /* ---------- カスタムカーソル ---------- */
@@ -44,7 +46,7 @@ function initCustomCursor() {
   }
   animateRing();
 
-  const hoverTargets = "a, button, .nav-card, .gallery-item, .link-card, .skill-tag";
+  const hoverTargets = "a, button, .nav-card, .gallery-item, .link-card";
   document.addEventListener("mouseover", (e) => {
     if (e.target.closest(hoverTargets)) ring.classList.add("is-hover");
   });
@@ -85,6 +87,58 @@ function initAvatars() {
 
     img.addEventListener("error", () => {
       avatar.classList.add("is-fallback");
+    });
+  });
+}
+
+/* ---------- 吹き出しのタイプライター表示 ---------- */
+function initTypewriter(speed = 45) {
+  const el = document.querySelector("[data-typewriter]");
+  if (!el) return;
+
+  const text = el.innerHTML.trim().replace(/\s*<br\s*\/?>\s*/gi, "\n");
+
+  el.innerHTML = '<span class="typewriter-text"></span><span class="typewriter-caret">▌</span>';
+  const target = el.querySelector(".typewriter-text");
+  const caret = el.querySelector(".typewriter-caret");
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReducedMotion) {
+    target.innerHTML = text.replace(/\n/g, "<br>");
+    caret.textContent = "■";
+    return;
+  }
+
+  let i = 0;
+  function step() {
+    if (i >= text.length) {
+      caret.textContent = "■";
+      return;
+    }
+    target.innerHTML += text[i] === "\n" ? "<br>" : text[i];
+    i++;
+    setTimeout(step, speed);
+  }
+  step();
+}
+
+/* ---------- 自己紹介ページ：趣味タブ ----------
+   説明文は各タブに対応する [data-hobby-detail] 要素の中に直接HTMLで書けます。
+   改行は <br>、段落を分けたいときは <p> を使ってください。
+------------------------------------------------------------ */
+function initHobbyTabs() {
+  const tabs = document.querySelectorAll("[data-hobby-tab]");
+  const details = document.querySelectorAll("[data-hobby-detail]");
+  if (!tabs.length || !details.length) return;
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      tabs.forEach((t) => t.classList.remove("is-active"));
+      tab.classList.add("is-active");
+
+      details.forEach((detail) => {
+        detail.hidden = detail.dataset.hobbyDetail !== tab.dataset.target;
+      });
     });
   });
 }

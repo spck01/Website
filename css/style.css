@@ -317,18 +317,36 @@ h1, h2, h3 {
   color: var(--c-red);
 }
 
-.hero-tagline {
-  font-size: clamp(1rem, 2.4vw, 1.3rem);
-  color: var(--c-text-dim);
-  max-width: 40em;
+.dialogue-box {
+  position: relative;
+  max-width: min(46em, 92vw);
   margin: 0 auto 2.5rem;
+  text-align: left;
+  background: var(--c-black-2);
+  border: 3px solid var(--c-yellow);
+  border-radius: 10px;
+  padding: 1.3rem 1.6rem;
+  box-shadow:
+    0 0 24px rgba(230, 35, 30, 0.3),
+    inset 0 0 20px rgba(0, 0, 0, 0.4);
 }
 
-.hero-tagline .edit-note {
-  display: block;
-  margin-top: 0.6em;
-  font-size: 0.8rem;
-  color: var(--c-orange);
+.hero-tagline {
+  font-size: clamp(1rem, 2.4vw, 1.2rem);
+  color: var(--c-text);
+  margin: 0;
+}
+
+.typewriter-caret {
+  display: inline-block;
+  margin-left: 0.15em;
+  color: var(--c-yellow);
+  animation: caret-blink 0.8s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
 /* ---------- カード共通 ---------- */
@@ -453,48 +471,49 @@ section.content {
   font-size: 1.5rem;
 }
 
-.hobby-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.hobby-list li {
-  background: var(--c-black-2);
-  border: 1px solid rgba(255, 204, 51, 0.12);
-  border-radius: 12px;
-  padding: 1.1rem 1.3rem;
-  transition: transform 0.25s ease, border-color 0.25s ease;
-}
-
-.hobby-list li:hover {
-  transform: translateY(-5px);
-  border-color: var(--c-yellow);
-}
-
-.skill-tags {
+.hobby-tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
+  margin-bottom: 1.2rem;
 }
 
-.skill-tag {
+.hobby-tab {
+  font-family: inherit;
+  font-size: 0.9rem;
   padding: 0.5em 1.1em;
   border-radius: 999px;
   background: var(--c-black-2);
   border: 1px solid var(--c-red);
-  font-size: 0.9rem;
+  color: var(--c-text);
+  cursor: pointer;
   transition: all 0.25s ease;
 }
 
-.skill-tag:hover {
+.hobby-tab:hover {
+  transform: scale(1.08);
+}
+
+.hobby-tab.is-active {
   background: linear-gradient(90deg, var(--c-red), var(--c-orange));
   color: var(--c-black);
-  transform: scale(1.08);
-  cursor: default;
+  border-color: transparent;
+}
+
+.hobby-panel {
+  background: var(--c-black-2);
+  border: 1px solid rgba(255, 204, 51, 0.12);
+  border-radius: 12px;
+  padding: 1.3rem 1.5rem;
+  color: var(--c-text-dim);
+}
+
+.hobby-detail p {
+  margin: 0 0 1em;
+}
+
+.hobby-detail p:last-child {
+  margin-bottom: 0;
 }
 
 /* ---------- イラスト集ページ ---------- */
