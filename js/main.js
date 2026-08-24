@@ -1,13 +1,12 @@
 /* ==========================================================
    hotChicken_sp - main.js
-   カスタムカーソル / 背景の火の粉パーティクル / モバイルナビ / ギャラリー・ライトボックス
+   カスタムカーソル / 背景の火の粉パーティクル / モバイルナビ / アイコン画像 / タイプライター / 趣味タブ
    ========================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
   initCustomCursor();
   initEmbers();
   initMobileNav();
-  initGallery();
   initAvatars();
   initTypewriter();
   initHobbyTabs();
@@ -46,7 +45,7 @@ function initCustomCursor() {
   }
   animateRing();
 
-  const hoverTargets = "a, button, .nav-card, .gallery-item, .link-card";
+  const hoverTargets = "a, button, .nav-card, .link-card";
   document.addEventListener("mouseover", (e) => {
     if (e.target.closest(hoverTargets)) ring.classList.add("is-hover");
   });
@@ -156,75 +155,4 @@ function initMobileNav() {
   nav.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => nav.classList.remove("is-open"));
   });
-}
-
-/* ---------- イラスト集 & ライトボックス ----------
-   ここに自分の作品を追加してください。
-   src を assets/illustrations/ 内の画像パスに変えると実際の画像が表示されます。
-   src が空のままだと、代わりにナンバー入りのプレースホルダーが表示されます。
------------------------------------------------------------- */
-const illustrations = [
-  { title: "作品タイトル 1", src: "" },
-  { title: "作品タイトル 2", src: "" },
-  { title: "作品タイトル 3", src: "" },
-  { title: "作品タイトル 4", src: "" },
-  { title: "作品タイトル 5", src: "" },
-  { title: "作品タイトル 6", src: "" },
-];
-
-function initGallery() {
-  const grid = document.querySelector("[data-gallery-grid]");
-  if (!grid) return;
-
-  illustrations.forEach((item, index) => {
-    const cell = document.createElement("div");
-    cell.className = "gallery-item";
-    cell.tabIndex = 0;
-
-    if (item.src) {
-      cell.innerHTML = `<img src="${item.src}" alt="${item.title}">`;
-    } else {
-      cell.innerHTML = `<span class="placeholder-label">No.${index + 1}</span>`;
-    }
-    cell.innerHTML += `<span class="caption">${item.title}</span>`;
-
-    const open = () => openLightbox(item);
-    cell.addEventListener("click", open);
-    cell.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") open();
-    });
-
-    grid.appendChild(cell);
-  });
-
-  const lightbox = document.querySelector("[data-lightbox]");
-  const closeBtn = document.querySelector("[data-lightbox-close]");
-  if (closeBtn) closeBtn.addEventListener("click", closeLightbox);
-  if (lightbox) {
-    lightbox.addEventListener("click", (e) => {
-      if (e.target === lightbox) closeLightbox();
-    });
-  }
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeLightbox();
-  });
-}
-
-function openLightbox(item) {
-  const lightbox = document.querySelector("[data-lightbox]");
-  const box = document.querySelector("[data-lightbox-box]");
-  const caption = document.querySelector("[data-lightbox-caption]");
-  if (!lightbox || !box) return;
-
-  box.innerHTML = item.src
-    ? `<img src="${item.src}" alt="${item.title}">`
-    : item.title;
-  if (caption) caption.textContent = item.title;
-
-  lightbox.classList.add("is-open");
-}
-
-function closeLightbox() {
-  const lightbox = document.querySelector("[data-lightbox]");
-  if (lightbox) lightbox.classList.remove("is-open");
 }
