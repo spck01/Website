@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initEmbers();
   initMobileNav();
   initGallery();
+  initHeroAvatar();
 });
 
 /* ---------- カスタムカーソル ---------- */
@@ -71,6 +72,20 @@ function initEmbers(count = 26) {
     ember.style.setProperty("--drift", `${drift}px`);
     wrap.appendChild(ember);
   }
+}
+
+/* ---------- TOPページのアイコン ----------
+   assets/icon.png を置き換えるだけで表示画像を変更できます。
+   ファイルが存在しない間は🐔のプレースホルダーが表示されます。
+------------------------------------------------------------ */
+function initHeroAvatar() {
+  const avatar = document.querySelector("[data-hero-avatar]");
+  const img = document.querySelector("[data-hero-avatar-img]");
+  if (!avatar || !img) return;
+
+  img.addEventListener("error", () => {
+    avatar.classList.add("is-fallback");
+  });
 }
 
 /* ---------- モバイルナビ開閉 ---------- */

@@ -1,2 +1,5 @@
 .DS_Store
 Thumbs.db
+
+# ローカルのみで使う非公開ファイル（GitHubには一切pushされない）
+assets/private/

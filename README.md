@@ -12,11 +12,13 @@ hotChicken_sp/
 ├── links.html            # リンク
 ├── css/style.css
 ├── js/main.js
+├── assets/icon.png        # TOPページのアイコン（任意）
 └── assets/illustrations/ # イラスト画像を置く場所
 ```
 
 ## 編集ポイント
 
+- **TOPページのアイコン (index.html)**: `assets/icon.png` に自分のアイコン画像を置くと、TOPページ上部に丸くトリミングされて表示されます。ファイルを置き換えるだけでよく、HTML/CSSの編集は不要です。未設置の間は🐔のプレースホルダーが表示されます。
 - **自己紹介 (about.html)**: 名前・自己紹介文・趣味・スキルの各プレースホルダーを書き換えてください。
 - **イラスト集 (gallery.html / js/main.js)**: `assets/illustrations/` に画像を置き、`js/main.js` 冒頭の `illustrations` 配列の `src` にファイルパス（例: `assets/illustrations/work1.png`）を指定すると画像が表示されます。未設定の間はナンバー入りのプレースホルダーが表示されます。
 - **リンク (links.html)**: 各カードの `href="#"` を実際のSNSのURLに書き換えてください。不要なカードは削除して構いません。

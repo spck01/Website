@@ -235,6 +235,43 @@ h1, h2, h3 {
   padding: 7rem 1rem 5rem;
 }
 
+.hero-avatar {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(140deg, var(--c-red), var(--c-orange), var(--c-yellow));
+  box-shadow: 0 0 30px rgba(230, 35, 30, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease;
+}
+
+.hero-avatar:hover {
+  transform: rotate(6deg) scale(1.05);
+}
+
+.hero-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-avatar .hero-avatar-fallback {
+  display: none;
+  font-size: 3.4rem;
+}
+
+.hero-avatar.is-fallback img {
+  display: none;
+}
+
+.hero-avatar.is-fallback .hero-avatar-fallback {
+  display: block;
+}
+
 .hero-title {
   font-size: clamp(2.4rem, 7vw, 5rem);
   margin: 0 0 0.3em;
