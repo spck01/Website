@@ -633,6 +633,21 @@ section.content {
   border-top: 1px solid rgba(255, 204, 51, 0.1);
 }
 
+.site-footer-credit {
+  margin: 0.6em 0 0;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.site-footer-credit a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.site-footer-credit a:hover {
+  color: var(--c-yellow);
+}
+
 /* ---------- ページ遷移フラッシュ（ポケモン風スパイラルワイプ） ---------- */
 .page-flash {
   position: fixed;
