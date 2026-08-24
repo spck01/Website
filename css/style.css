@@ -180,10 +180,9 @@ h1, h2, h3 {
   white-space: nowrap;
 }
 
-.logo .flame {
-  width: 1.1em;
-  height: 1.1em;
-  fill: currentColor;
+.logo .chili {
+  width: 1.15em;
+  height: 1.15em;
   animation: flicker 1.6s infinite ease-in-out;
   display: inline-block;
   vertical-align: -0.15em;
